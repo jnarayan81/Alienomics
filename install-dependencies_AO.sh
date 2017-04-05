@@ -30,7 +30,7 @@ if [ ! -d "$PWD/ncbi-blast-2.6.0+/bin" ]; then
     wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/LATEST/ncbi-blast-2.6.0+-x64-linux.tar.gz;
     tar xzfp ncbi-blast-2.6.0+-x64-linux.tar.gz;
 else
-   echo "NCBI blast+ tool exist"
+   echo "NCBI blast+ tool exists"
 fi
 
 
@@ -40,7 +40,7 @@ if [ ! -d "$PWD/augustus-3.2.3" ]; then
     wget http://bioinf.uni-greifswald.de/augustus/binaries/augustus-3.2.3.tar.gz
     tar xzfp augustus-3.2.3.tar.gz;
 else
-   echo "augustus.2.5.5 tool exist"
+   echo "augustus.2.5.5 tool exists"
 fi
 
 # BlastDB download
@@ -52,7 +52,7 @@ if [ ! -d "$PWD/blastDB" ]; then
     wget "ftp://ftp.ncbi.nlm.nih.gov/blast/db/nt.*.tar.gz"
     for a in nt.*.tar.gz; do tar xzf $a; done
 else
-   echo "blastDB database exists"
+   echo "blastDB database exists! If not installed sucessfully, delete the folder and re-run it"
 fi
 
 # taxdump download
@@ -72,19 +72,19 @@ fi
 # SILVA rRNA database
 # Change your database name as per you need
 # https://www.arb-silva.de/no_cache/download/archive/release_128/Exports/
-#SILVA_128_LSUParc_tax_silva.fasta.gz
-#SILVA_128_LSUParc_tax_silva_trunc.fasta.gz	
-#SILVA_128_LSURef_tax_silva.fasta.gz
-#SILVA_128_LSURef_tax_silva_full_align_trunc.fasta.gz
-#SILVA_128_LSURef_tax_silva_trunc.fasta.gz
-#SILVA_128_SSUParc_tax_silva.fasta.gz
-#SILVA_128_SSUParc_tax_silva_trunc.fasta.gz
-#SILVA_128_SSURef_Nr99_tax_silva.fasta.gz
-#SILVA_128_SSURef_Nr99_tax_silva_full_align_trunc.fasta.gz
-#SILVA_128_SSURef_Nr99_tax_silva_trunc.fasta.gz
-#SILVA_128_SSURef_tax_silva.fasta.gz
-#SILVA_128_SSURef_tax_silva_full_align_trunc.fasta.gz
-#SILVA_128_SSURef_tax_silva_trunc.fasta.gz
+# SILVA_128_LSUParc_tax_silva.fasta.gz
+# SILVA_128_LSUParc_tax_silva_trunc.fasta.gz	
+# SILVA_128_LSURef_tax_silva.fasta.gz
+# SILVA_128_LSURef_tax_silva_full_align_trunc.fasta.gz
+# SILVA_128_LSURef_tax_silva_trunc.fasta.gz
+# SILVA_128_SSUParc_tax_silva.fasta.gz
+# SILVA_128_SSUParc_tax_silva_trunc.fasta.gz
+# SILVA_128_SSURef_Nr99_tax_silva.fasta.gz
+# SILVA_128_SSURef_Nr99_tax_silva_full_align_trunc.fasta.gz
+# SILVA_128_SSURef_Nr99_tax_silva_trunc.fasta.gz
+# SILVA_128_SSURef_tax_silva.fasta.gz
+# SILVA_128_SSURef_tax_silva_full_align_trunc.fasta.gz
+# SILVA_128_SSURef_tax_silva_trunc.fasta.gz
 
 if [ ! -d "$PWD/rRNADB" ]; then
     if [ ! -d "$PWD/rRNADB" ]; then
