@@ -43,6 +43,7 @@ else
    echo "augustus.2.5.5 tool exists"
 fi
 
+: '
 # BlastDB download
 if [ ! -d "$PWD/blastDB" ]; then
     if [ ! -d "$PWD/blastDB" ]; then
@@ -54,6 +55,7 @@ if [ ! -d "$PWD/blastDB" ]; then
 else
    echo "blastDB database exists! If not installed sucessfully, delete the folder and re-run it"
 fi
+'
 
 # taxdump download
 if [ ! -d "$PWD/taxdump" ]; then
@@ -99,4 +101,12 @@ else
 fi
 
 
-# 
+# Download bwakit
+if [ ! -d "$PWD/bwa.kit" ]; then
+    cd $PWD
+    wget https://downloads.sourceforge.net/project/bio-bwa/bwakit/bwakit-0.7.12_x64-linux.tar.bz2
+    tar -xjf bwakit-0.7.12_x64-linux.tar.bz2
+else
+   echo "bwa.kit exists"
+fi
+
