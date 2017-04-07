@@ -96,6 +96,7 @@ if [ ! -d "$PWD/rRNADB" ]; then
     wget https://www.arb-silva.de/fileadmin/silva_databases/release_128/Exports/SILVA_128_LSUParc_tax_silva.fasta.gz
     gzip -d SILVA_128_LSUParc_tax_silva.fasta.gz
     #for a in *.fasta.gz; do gzip $a; done
+    cd ..
 else
    echo "rRNADB database exists"
 fi
