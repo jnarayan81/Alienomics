@@ -88,17 +88,17 @@ fi
 # SILVA_128_SSURef_tax_silva_full_align_trunc.fasta.gz
 # SILVA_128_SSURef_tax_silva_trunc.fasta.gz
 
-if [ ! -d "$PWD/rRNADB" ]; then
-    if [ ! -d "$PWD/rRNADB" ]; then
-        mkdir $PWD/rRNADB
+if [ ! -d "$PWD/rRNAData" ]; then
+    if [ ! -d "$PWD/rRNAData" ]; then
+        mkdir $PWD/rRNAData
     fi
-    cd $PWD/rRNADB
+    cd $PWD/rRNAData
     wget https://www.arb-silva.de/fileadmin/silva_databases/release_128/Exports/SILVA_128_LSUParc_tax_silva.fasta.gz
     gzip -d SILVA_128_LSUParc_tax_silva.fasta.gz
     #for a in *.fasta.gz; do gzip $a; done
     cd ..
 else
-   echo "rRNADB database exists"
+   echo "rRNAData database exists"
 fi
 
 
