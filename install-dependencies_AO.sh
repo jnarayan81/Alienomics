@@ -7,6 +7,62 @@
 
 # Alienomics v0.1 @ Jitendra Narayan
 
+echo -e "\nInstalling perl modules, if not exists ---\n"
+
+allMods=(
+Cwd
+File::chdir
+File::Copy
+POSIX
+Tie::File
+Try::Tiny
+Data::Dumper
+File::Basename
+Bio::SeqIO
+FindBin
+File::Remove
+Capture::Tiny
+File::Temp
+File::Spec::Functions
+Statistics::Multtest
+File::Path
+Statistics::Distributions
+Getopt::Long
+Statistics::R
+Math::Round
+File::Find
+Bio::DB::Taxonomy
+Pod::Usage
+);
+
+for i in "${allMods[@]}"
+do
+	m=$(perl -M$i -e 1 2>&1)
+	rc=$?
+	if [[ $rc != 0 ]]
+		then
+		echo "Installing Perl module $i"
+		perl -MCPAN -e "install $i"
+	fi
+	
+	m=$(perl -M$i -e 1 2>&1)
+	rc1=$?
+
+	if [[ $rc1 != 0 ]]
+		then
+		echo ""
+		echo "------------============--------------"
+		echo "Perl $i modules NOT installed successfully. Please make sure that Perl and CPAN are available on your system."
+		echo "For Ubuntu and Debian users: you can use 'apt-get install perl' to get newest Perl and CPAN."
+		echo "------------============---------------"
+	else
+		echo -e "exists \t $i"
+	fi
+
+done
+
+echo -e "\nInstalling third party database and tools\n"
+
 set -e
 
 : '
@@ -30,7 +86,7 @@ if [ ! -d "$PWD/ncbi-blast-2.6.0+/bin" ]; then
     wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/LATEST/ncbi-blast-2.6.0+-x64-linux.tar.gz;
     tar xzfp ncbi-blast-2.6.0+-x64-linux.tar.gz;
 else
-   echo "NCBI blast+ tool exists"
+   echo -e "exists \t NCBI blast+ tool"
 fi
 
 
@@ -40,7 +96,7 @@ if [ ! -d "$PWD/augustus-3.2.3" ]; then
     wget http://bioinf.uni-greifswald.de/augustus/binaries/augustus-3.2.3.tar.gz
     tar xzfp augustus-3.2.3.tar.gz;
 else
-   echo "augustus.2.5.5 tool exists"
+   echo -e "exists \t augustus.2.5.5 tool"
 fi
 
 : '
@@ -53,7 +109,7 @@ if [ ! -d "$PWD/blastDB" ]; then
     wget "ftp://ftp.ncbi.nlm.nih.gov/blast/db/nt.*.tar.gz"
     for a in nt.*.tar.gz; do tar xzf $a; done
 else
-   echo "blastDB database exists! If not installed sucessfully, delete the folder and re-run it"
+   echo -e "exists \t blastDB, If not installed sucessfully, delete the folder and re-run it"
 fi
 '
 
@@ -67,7 +123,7 @@ if [ ! -d "$PWD/taxdump" ]; then
     tar xzfp taxdump.tar.gz;
     cd ..
 else
-   echo "taxdump database exists"
+   echo -e "exists \t taxdump database"
 fi
 
 
@@ -98,7 +154,7 @@ if [ ! -d "$PWD/rRNAData" ]; then
     #for a in *.fasta.gz; do gzip $a; done
     cd ..
 else
-   echo "rRNAData database exists"
+   echo -e "exists \t rRNAData database"
 fi
 
 
@@ -108,7 +164,7 @@ if [ ! -d "$PWD/bwa.kit" ]; then
     wget https://downloads.sourceforge.net/project/bio-bwa/bwakit/bwakit-0.7.12_x64-linux.tar.bz2
     tar -xjf bwakit-0.7.12_x64-linux.tar.bz2
 else
-   echo "bwa.kit exists"
+   echo -e "exists \t bwa.kit "
 fi
 
 
@@ -174,6 +230,7 @@ if [ ! -d "$PWD/BUSCOData" ]; then
     tar xzfp metazoa_odb9.tar.gz
     #for a in *.fasta.gz; do gzip $a; done
 else
-   echo "BUSCOData database exists"
+   echo -e "exists \t BUSCOData database"
 fi
 
+echo -e "\nAll Done\n"
