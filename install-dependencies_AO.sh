@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+# -*- coding: utf-8 -*-
 #!/bin/bash
 
 # Install all dependencies for Alienomics v0.1
@@ -80,26 +82,26 @@ else
     echo "prinseq tool exists"
 fi
 '
-# NCBI ncbi-blast-2.6.0+
-if [ ! -d "$PWD/ncbi-blast-2.6.0+/bin" ]; then
+# NCBI ncbi-blast-2.8.1+
+if [ ! -d "$PWD/ncbi-blast-2.8.1+/bin" ]; then
     cd $PWD;
-    wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/LATEST/ncbi-blast-2.6.0+-x64-linux.tar.gz;
-    tar xzfp ncbi-blast-2.6.0+-x64-linux.tar.gz;
+    wget ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.8.1/ncbi-blast-2.8.1+-x64-linux.tar.gz;
+    tar xzfp ncbi-blast-2.8.1+-x64-linux.tar.gz;
 else
    echo -e "exists \t NCBI blast+ tool"
 fi
 
 
 # augustus.2.5.5
-if [ ! -d "$PWD/augustus-3.2.3" ]; then
+if [ ! -d "$PWD/augustus.current" ]; then
     cd $PWD;
-    wget http://bioinf.uni-greifswald.de/augustus/binaries/augustus-3.2.3.tar.gz
-    tar xzfp augustus-3.2.3.tar.gz;
+    wget http://bioinf.uni-greifswald.de/augustus/binaries/augustus.current.tar.gz
+    tar xzfp augustus.current.tar.gz;
 else
-   echo -e "exists \t augustus.2.5.5 tool"
+   echo -e "exists \t augustus.current tool"
 fi
 
-: '
+
 # BlastDB download
 if [ ! -d "$PWD/blastDB" ]; then
     if [ ! -d "$PWD/blastDB" ]; then
@@ -108,10 +110,12 @@ if [ ! -d "$PWD/blastDB" ]; then
     cd $PWD/blastDB
     wget "ftp://ftp.ncbi.nlm.nih.gov/blast/db/nt.*.tar.gz"
     for a in nt.*.tar.gz; do tar xzf $a; done
+    #Out of the directory 
+    cd ..
 else
    echo -e "exists \t blastDB, If not installed sucessfully, delete the folder and re-run it"
 fi
-'
+
 
 # taxdump download
 if [ ! -d "$PWD/taxdump" ]; then
