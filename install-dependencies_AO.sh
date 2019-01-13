@@ -238,3 +238,5 @@ else
 fi
 
 echo -e "\nAll Done\n"
+
+echo -e "\nInstall R package install.packages('Ckmeans.1d.dp') \n"
