@@ -15,7 +15,7 @@ Version 0.3.1 has been released !
 ### Motivation and Reasoning
 The Kelly Family, a European-American pop group, wrote the tune "Fell in Love with an Alien." This refers to my fascination with genes that are horizontally transferred between unicellular and/or multicellular organisms rather than vertically transmitted from parent to offspring (reproduction). Many organisms' evolution is influenced by horizontal gene transfer ([HGT](https://scholar.google.co.in/scholar?hl=en&as_sdt=0%2C5&q=hgt&btnG=)). This work was inspired by my love-hate relationship with Adineta vaga's relatively unknown DNA fragments. A surprisingly high proportion of bdelloid genes are homologous to nonmetazoan orthologs, mainly from bacteria but also from fungi and plants, suggesting that the rate of HGT into bdelloid genomes is at least an order of magnitude greater than in other eukaryotes. Interestingly, many genes derived from nonmetazoans via HGT are expressed and known to be functional.
 
-Unfortunately, most published methods so far rely on only a few (if not only one) type of metrics, making them prone to errors. The use of plain aligners have limits and can result in unwanted artifacts. One must remember that HGT is an evolutionary hypothesis, and a sequence alignment in itself is not enough to validate such hypothesis. Mostly phylogenetic and parametric method are used for HGT detection and contamination filtration. The phylogenetic approach relies on incongruent relationships among taxa, whereas shift in nucleotide composition, and homology search are utilised by parametric method. Here we tried coverage, relative GC content and best similarity match in public databases, expression data and many more parametroc threaholds to divide the genome data into clean, contaminated and HGT DNA sequences.
+Unfortunately, most published methods so far depend on just a few (if not just one) types of metrics, rendering them susceptible to errors. Plain aligners have limitations and can produce unwanted artifacts. It is important to note that HGT is an evolutionary hypothesis, and that a sequence alignment alone is insufficient to confirm such a hypothesis. For HGT identification and contamination filtration, phylogenetic and parametric methods are commonly used. The phylogenetic approach is based on incongruent relationships among taxa, whereas the parametric method is based on changes in nucleotide composition and homology search. In this study, we used coverage, relative GC content, and best similarity match in public databases, expression data, and many other parameters to categorize genome data as clean, contaminated, or HGT DNA sequences.  
 
 ## Installation
 
@@ -47,7 +47,7 @@ OR
 alienomics_v0.3 --conf config/test.aom
 ```
 The primary flags are as follows:  
-- <code>[-c | --conf] <filepath>:</code> Provide the location of alienomics configuration file.   
+- <code>[-c | --conf] <filepath>:</code> Provide the location of alienomics configuration file.    
 - <code>[-dd | --database_download]:</code> Download the third party database from server.   
 - <code>[-cc | --create_config]:</code> Create the sample config file to test run alienomics.   
 - <code>[-w | --version]:</code> Know about the developers.    
