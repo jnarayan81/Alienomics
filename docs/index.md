@@ -1,4 +1,4 @@
-![Image](https://github.com/jnarayan81/Alienomics/blob/master/docs/alien.jpg) 
+![Image](alien.jpg) 
 
 ## Welcome to Alienomics Homepage !
 Thank you for visiting.  
@@ -46,11 +46,12 @@ alienomics_v0.3 -c config/test.aom
 OR 
 alienomics_v0.3 --conf config/test.aom
 ```
-<code>[-c | --conf] <filepath>:</code> Provide the location of alienomics configuration file.  
-<code>[-dd | --database_download]:</code> Download the third party database from server.  
-<code>[-cc | --create_config]:</code> Create the sample config file to test run alienomics.  
-<code>[-w | --version]:</code> Know about the developers.   
-<code>[-v | --version]:</code> You can check of the version of the the alienomics program.   
+The primary flags are as follows:  
+- <code>[-c | --conf] <filepath>:</code> Provide the location of alienomics configuration file.   
+- <code>[-dd | --database_download]:</code> Download the third party database from server.   
+- <code>[-cc | --create_config]:</code> Create the sample config file to test run alienomics.   
+- <code>[-w | --version]:</code> Know about the developers.    
+- <code>[-v | --version]:</code> You can check of the version of the the alienomics program.    
   
 All the mandatory and optional parameters are needed to be set in config.aom file. 
 
