@@ -70,7 +70,7 @@ Here -ccl stands for create config location
 External Program action tasks are used to launch and execute other programs, which can be beneficial when processing your alienomics job file. The external program is run with the parameters specified in the Alienomics configuration file.
 
 In the configuration file, specify the absolute path to all mandatory tools as follows:
-<Name>=<Absolute Path>
+Name=Absolute Path
 
 ```sh
 diamond = /usr/local/bin/diamond
@@ -83,7 +83,7 @@ seqtk = /home/urbe/anaconda3/envs/seqtk_paul/bin/seqtk
 samtools = /usr/local/bin/samtools
 kallisto = /home/urbe/Tools/kallisto/kallisto
 ```
-Because <Name> is a reserved keyword, you can only change the <Absolute path>. You can find out the applications path by following command in your terminal
+Because "Name" is a reserved keyword, you can only change the "Absolute path". You can find out the applications path by following command in your terminal
 
 ```sh
 #The "which" command has had problems getting the proper path (confusion between environment and dot files). For "type", you can get just the path with the -p argument.
