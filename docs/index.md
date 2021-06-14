@@ -224,7 +224,7 @@ Feel free to clone this repository and use it under the licensing terms.
 
 Additionally, as the project is on github, you may submit patches, ticket requests, edit the wiki, send pull requests - anything you like and have the permissions to do. I will encourage any suggestions from followers :)
 
-As always, you can contact the authors at <jnarayan81@gmail.com>.
+As always, you can contact the authors at <jnarayan81@gmail.com>, Paul Simion <polo.simion@gmail.com>, / Alexandre Mayer / Pr. Karine Van Doninck 
 
 ## Citation
 Feel free to cite the followings:  
