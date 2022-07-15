@@ -12,26 +12,25 @@ sub buscoBlaster {
 my ($param, $geneSet)=@_;
 
 #Create local blastDB
-print "Creating blast buscoDB";
+print "Preparing BUSCO database for blasting\n";
 if ($param->{alignment_mode} eq 'blast'){
-	system ("$param->{makeblastdb_path} -in $param->{busco_file} -parse_seqids -dbtype prot -out $param->{project_dir_path}/localDB/buscoDB/mybuscoDB");
+	system ("$param->{makeblastdb_path} -in $param->{busco_file} -parse_seqids -dbtype prot -out $param->{output_folder}/localDB/buscoDB/mybuscoDB");
 	}
 elsif ($param->{alignment_mode} eq 'diamond'){
-        print "$param->{diamond_path} makedb --in $param->{busco_file} --db $param->{project_dir_path}/localDB/buscoDB/mybuscoDB";
-        system ("$param->{diamond_path} makedb --in $param->{busco_file} --db $param->{project_dir_path}/localDB/buscoDB/mybuscoDB");
+        #print "$param->{diamond_path} makedb --in $param->{busco_file} --db $param->{output_folder}/localDB/buscoDB/mybuscoDB";
+        system ("$param->{diamond_path} makedb --in $param->{busco_file} --db $param->{output_folder}/localDB/buscoDB/mybuscoDB > /dev/null 2>&1");
 	}
 else { print "Did you forgot to provide alignment_mode\n"; exit;}
 
 
-print "diamond blastx against buscoDB ....\n";
+print "diamond blastx against BUSCO database\n";
 if ($param->{alignment_mode} eq 'blast'){
-	system ("$param->{blastx_path} -task blastx-fast -query $param->{project_dir_path}/intermediate_files/bed/gene.fa -db $param->{project_dir_path}/localDB/buscoDB/mybuscoDB -evalue $param->{evalue} -num_threads $param->{max_processors} -max_target_seqs 1 -max_hsps 1 -qcov_hsp_perc $param->{qcovper} -outfmt '6 qseqid qstart qend sstart send evalue length frames qcovs bitscore' -out $param->{project_dir_path}/intermediate_files/busco/buscoGenes.megablast");
+	system ("$param->{blastx_path} -task blastx-fast -query $param->{output_folder}/intermediate_files/bed/gene.fa -db $param->{output_folder}/localDB/buscoDB/mybuscoDB -evalue $param->{evalue} -num_threads $param->{max_processors} -max_target_seqs 1 -max_hsps 1 -qcov_hsp_perc $param->{qcovper} -outfmt '6 qseqid qstart qend sstart send evalue length frames qcovs bitscore' -out $param->{output_folder}/intermediate_files/busco/buscoGenes.megablast");
 }
 elsif ($param->{alignment_mode} eq 'diamond'){
-        print "$param->{diamond_path} $param->{diamond_task} --more-sensitive --query $param->{project_dir_path}/intermediate_files/bed/gene.fa --db $param->{project_dir_path}/localDB/buscoDB/mybuscoDB -k 1 --max-hsps 1 --evalue $param->{evalue} --threads $param->{max_processors} --query-cover $param->{qcovper} --outfmt 6 qseqid  qstart qend sstart send evalue length qframe qcovhsp bitscore --out $param->{project_dir_path}/intermediate_files/busco/buscoGenes.megablast";
-        system ("$param->{diamond_path} $param->{diamond_task} --more-sensitive --query $param->{project_dir_path}/intermediate_files/bed/gene.fa --db $param->{project_dir_path}/localDB/buscoDB/mybuscoDB -k 1 --max-hsps 1 --evalue $param->{evalue} --threads $param->{max_processors} --query-cover $param->{qcovper} --outfmt 6 qseqid qstart qend sstart send evalue length qframe qcovhsp bitscore --out $param->{project_dir_path}/intermediate_files/busco/buscoGenes.megablast");
-
-}
+        #print "$param->{diamond_path} $param->{diamond_task} --more-sensitive --query $param->{output_folder}/intermediate_files/bed/gene.fa --db $param->{output_folder}/localDB/buscoDB/mybuscoDB -k 1 --max-hsps 1 --evalue $param->{evalue} --threads $param->{max_processors} --query-cover $param->{qcovper} --outfmt 6 qseqid  qstart qend sstart send evalue length qframe qcovhsp bitscore --out $param->{output_folder}/intermediate_files/busco/buscoGenes.megablast";
+        system ("$param->{diamond_path} $param->{diamond_task} --more-sensitive --query $param->{output_folder}/intermediate_files/bed/gene.fa --db $param->{output_folder}/localDB/buscoDB/mybuscoDB -k 1 --max-hsps 1 --evalue $param->{evalue} --threads $param->{max_processors} --query-cover $param->{qcovper} --outfmt 6 qseqid qstart qend sstart send evalue length qframe qcovhsp bitscore --out $param->{output_folder}/intermediate_files/busco/buscoGenes.megablast > /dev/null 2>&1");
+	}
 else { print "Did you forgot to provide alignment_mode\n"; exit;}
 
 # warning : there is not equivalent to the blast 'frames' field in diamond output, there is only 'qframe' and 'sframe' fields
@@ -45,10 +44,10 @@ else { print "Did you forgot to provide alignment_mode\n"; exit;}
 
 
 #Added the detail of the genes in megablast
-print "Adding info into buscoDB blasthit results....\n";
-AOM::commonSubs::addGeneDetail("$param->{project_dir_path}/intermediate_files/busco/buscoGenes.megablast", $geneSet, "$param->{project_dir_path}/intermediate_files/busco/buscoGenes.megablast.added");
+print "Adding gene info into blast output\n";
+AOM::commonSubs::addGeneDetail("$param->{output_folder}/intermediate_files/busco/buscoGenes.megablast", $geneSet, "$param->{output_folder}/intermediate_files/busco/buscoGenes.megablast.added");
 
-my ($buscoHash_ref, $min, $max)=buscoHasher("$param->{project_dir_path}/intermediate_files/busco/buscoGenes.megablast.added");
+my ($buscoHash_ref, $min, $max)=buscoHasher("$param->{output_folder}/intermediate_files/busco/buscoGenes.megablast.added");
 return ($buscoHash_ref, $min, $max);
 }
 

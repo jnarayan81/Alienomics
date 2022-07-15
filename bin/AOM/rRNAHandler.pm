@@ -18,22 +18,22 @@ my ($param, $geneSet)=@_;
 #remove the space from header file with "_";
 #correctFastaHead("$param->{rRNA_file}", "\s+", "_");
 
-   print "Converting RNA to DNA alphabet ....\n";
-   RNA2DNAalphabet ("$param->{rRNA_file}", "$param->{project_dir_path}/intermediate_files/rRNA/rRNA2DNA"); #Formated alphabet to DNA
+	print "Converting RNA to DNA alphabet\n";
+	RNA2DNAalphabet ("$param->{rRNA_file}", "$param->{output_folder}/intermediate_files/rRNA/rRNA2DNA"); #Formated alphabet to DNA
 
-   print "Creating blast rRNADB for you with updated rRNA file ....";
-   system ("$param->{makeblastdb_path} -in $param->{project_dir_path}/intermediate_files/rRNA/rRNA2DNA -parse_seqids -dbtype nucl -out $param->{project_dir_path}/localDB/rRNADB/myrRNADB");
+	print "Preparing blast database for rRNA\n";
+	system ("$param->{makeblastdb_path} -in $param->{output_folder}/intermediate_files/rRNA/rRNA2DNA -parse_seqids -dbtype nucl -out $param->{output_folder}/localDB/rRNADB/myrRNADB > /dev/null 2>&1");
 
 	#For local blast using $param->{blastdb_path} data --- with GENE
-	print "Blasting genes onto rRNADB\n";
-	system ("$param->{blastn_path} -task $param->{blast_task} -query $param->{project_dir_path}/intermediate_files/bed/gene.fa -db $param->{project_dir_path}/localDB/rRNADB/myrRNADB -evalue $param->{evalue} -num_threads $param->{max_processors} -max_target_seqs 1 -max_hsps 1 -qcov_hsp_perc $param->{qcovper} -outfmt '6 qseqid sallseqid qstart qend sallseqi sstart send evalue length frames qcovs bitscore' -out $param->{project_dir_path}/intermediate_files/rRNA/rRNAGene.megablast");
+	print "Blastn against rRNADB";
+	system ("$param->{blastn_path} -task $param->{blast_task} -query $param->{output_folder}/intermediate_files/bed/gene.fa -db $param->{output_folder}/localDB/rRNADB/myrRNADB -evalue $param->{evalue} -num_threads $param->{max_processors} -max_target_seqs 1 -max_hsps 1 -qcov_hsp_perc $param->{qcovper} -outfmt '6 qseqid sallseqid qstart qend sallseqi sstart send evalue length frames qcovs bitscore' -out $param->{output_folder}/intermediate_files/rRNA/rRNAGene.megablast > /dev/null 2>&1");
 
 #Added the detail of the genes in megablast
-print "Additng info in rRNA blasthit ....\n";
-AOM::commonSubs::addGeneDetail("$param->{project_dir_path}/intermediate_files/rRNA/rRNAGene.megablast", $geneSet, "$param->{project_dir_path}/intermediate_files/rRNA/rRNAGene.megablast.added");
+print "Adding gene info in rRNA blasthit\n";
+AOM::commonSubs::addGeneDetail("$param->{output_folder}/intermediate_files/rRNA/rRNAGene.megablast", $geneSet, "$param->{output_folder}/intermediate_files/rRNA/rRNAGene.megablast.added");
 
 #Store it in hash
-my ($rRNAHash_ref, $min, $max)=rRNAHasher("$param->{project_dir_path}/intermediate_files/rRNA/rRNAGene.megablast.added");
+my ($rRNAHash_ref, $min, $max)=rRNAHasher("$param->{output_folder}/intermediate_files/rRNA/rRNAGene.megablast.added");
 return ($rRNAHash_ref, $min, $max);
 }
 

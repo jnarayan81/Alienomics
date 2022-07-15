@@ -32,8 +32,8 @@ close $fh2;
 
 #Lets read the gene file
 open(my $fh, '<:encoding(UTF-8)', $Gene_file) or die "Could not open file '$Gene_file' $!";
-#print $GFF_OUTPUT "Scaffold\tlength\tGC_scaf\tgene\tRef_score\tgeneral_blast_score\tBusco_score\trRNA_score\tfeeder_score\tTNF_score\tcoverage\tcov_score\tGC\tGC_score\tgene_scoreFinal_sigScore\tScaffoldScore\tGeneStatus\t[ScaffoldScore(ScafContamFlag,ScafUndefFlag)]\t[GeneScore(GeneAlienFlag,GeneUndefFlag)]\n";
-print $GFF_OUTPUT "Scaffold\tSource\tFeature\tstart\tend\tgene_score\tstrand\tframe\tattributes[RefScore;BlastScore;BuscoScore;rRNAScore;feederScore;TNFScore;CoverageScore(coverage);GCScore(GC%);ExpressionScore(TPM);RawGeneScore]\n";
+#print $GFF_OUTPUT "Scaffold\tlength\tGC_scaf\tgene\tRef_score\tgeneral_blast_score\tBusco_score\trRNA_score\tfeeder_score\tTNF_score\texpected_coverage\tcov_score\tGC\tGC_score\tgene_scoreFinal_sigScore\tScaffoldScore\tGeneStatus\t[ScaffoldScore(ScafContamFlag,ScafUndefFlag)]\t[GeneScore(GeneAlienFlag,GeneUndefFlag)]\n";
+print $GFF_OUTPUT "Scaffold\tSource\tFeature\tstart\tend\tgene_score\tstrand\tframe\tattributes[RefScore;BlastScore;BuscoScore;rRNAScore;feederScore;TNFScore;CoverageScore(expected_coverage);GCScore(GC%);ExpressionScore(TPM);RawGeneScore]\n";
 
 while (my $row = <$fh>) {
 	chomp $row;

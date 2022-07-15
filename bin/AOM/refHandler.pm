@@ -18,42 +18,38 @@ my ($param, $geneSet)=@_;
 
 if ($param->{create_local_db} eq 'yes') {
    if ($param->{alignment_mode} eq 'blast') { # warning: this will blast against a GENOME
-      print "Creating blast DB ....";
-      system ("$param->{makeblastdb_path} -in $param->{reference_genome_file} -parse_seqids -dbtype nucl -out $param->{project_dir_path}/localDB/refDB/myDB");
+      print "Creating blast for nucleotidic DB\n";
+      system ("$param->{makeblastdb_path} -in $param->{reference_genome_file} -parse_seqids -dbtype nucl -out $param->{output_folder}/localDB/refDB/myDB");
    }
    elsif ($param->{alignment_mode} eq 'diamond') { # warning: this will blast against a PROTEOME
-      print "Creating diamond DB for proteic reference ....";
-      system ("$param->{diamond_path} makedb --in $param->{reference_proteome_file} --db $param->{project_dir_path}/localDB/refDB/myDB --threads $param->{max_processors}");
+      print "Creating diamond DB for reference proteome\n";
+      system ("$param->{diamond_path} makedb --in $param->{reference_proteome_file} --db $param->{output_folder}/localDB/refDB/myDB --threads $param->{max_processors} > /dev/null 2>&1");
    }
 }
 else  {print "Do database !!"; }
 
 #Blast against localRef database [would be nice to better parallelize this one ?]
 if ($param->{alignment_mode} eq 'blast') { # warning: this will blast against a GENOME
-   print "Blast against reference genome ....\n";
-   system ("$param->{blastn_path} -task $param->{blast_task} -query $param->{project_dir_path}/intermediate_files/bed/gene.fa -db $param->{project_dir_path}/localDB/refDB/myDB -evalue $param->{evalue} -num_threads $param->{max_processors} -max_target_seqs 1 -max_hsps 1 -qcov_hsp_perc $param->{qcovper} -outfmt '6 qseqid staxid qstart qend sallseqi sstart send evalue length frames qcovs bitscore' -out $param->{project_dir_path}/intermediate_files/ref/refgenome.megablast");
+	print "Blastn against reference genome\n";
+	system ("$param->{blastn_path} -task $param->{blast_task} -query $param->{output_folder}/intermediate_files/bed/gene.fa -db $param->{output_folder}/localDB/refDB/myDB -evalue $param->{evalue} -num_threads $param->{max_processors} -max_target_seqs 1 -max_hsps 1 -qcov_hsp_perc $param->{qcovper} -outfmt '6 qseqid staxid qstart qend sallseqi sstart send evalue length frames qcovs bitscore' -out $param->{output_folder}/intermediate_files/ref/refgenome.megablast");
 }
 elsif ($param->{alignment_mode} eq 'diamond') { # warning: this will blast against a PROTEOME
-   print "Blast against proteic reference ....\n";
-   system ("$param->{diamond_path} $param->{diamond_task} --more-sensitive --query $param->{project_dir_path}/intermediate_files/bed/gene.fa --db $param->{project_dir_path}/localDB/refDB/myDB --max-target-seqs 1 --max-hsps 1 --evalue $param->{evalue} --query-cover $param->{qcovper} --threads $param->{max_processors} --outfmt 6 qseqid sseqid qstart qend sstart send evalue length qframe qcovhsp bitscore --out $param->{project_dir_path}/intermediate_files/ref/refgenome.megablast");
+	print "Diamond blast against reference proteome\n";
+	system ("$param->{diamond_path} $param->{diamond_task} --more-sensitive --query $param->{output_folder}/intermediate_files/bed/gene.fa --db $param->{output_folder}/localDB/refDB/myDB --max-target-seqs 1 --max-hsps 1 --evalue $param->{evalue} --query-cover $param->{qcovper} --threads $param->{max_processors} --outfmt 6 qseqid sseqid qstart qend sstart send evalue length qframe qcovhsp bitscore --out $param->{output_folder}/intermediate_files/ref/refgenome.megablast > /dev/null 2>&1");
 }
-
 
 
 #Extract all no_hits_ids
-print "Extracting all no_hits_ids - reference based\n";
-my $noHitsValues_ref = extractNoHits("$param->{project_dir_path}/intermediate_files/bed/gene.fa", "$param->{project_dir_path}/intermediate_files/ref/refgenome.megablast", "$param->{project_dir_path}/intermediate_files/ref/refgenome.ids.noHits");
+my $noHitsValues_ref = extractNoHits("$param->{output_folder}/intermediate_files/bed/gene.fa", "$param->{output_folder}/intermediate_files/ref/refgenome.megablast", "$param->{output_folder}/intermediate_files/ref/refgenome.ids.noHits");
 
-print "Extracting fasta sequences - reference based\n";
-extractFasta($noHitsValues_ref, "$param->{project_dir_path}/intermediate_files/bed/gene.fa", "$param->{project_dir_path}/intermediate_files/ref/refNoHits.fa");
-#extractFasta2("$param->{project_dir_path}/intermediate_files/bed/gene.fa", "$param->{project_dir_path}/intermediate_files/ref/refgenome.ids.noHits", "$param->{project_dir_path}/intermediate_files/ref/refNoHits.fa");
+extractFasta($noHitsValues_ref, "$param->{output_folder}/intermediate_files/bed/gene.fa", "$param->{output_folder}/intermediate_files/ref/refNoHits.fa");
+#extractFasta2("$param->{output_folder}/intermediate_files/bed/gene.fa", "$param->{output_folder}/intermediate_files/ref/refgenome.ids.noHits", "$param->{output_folder}/intermediate_files/ref/refNoHits.fa");
 
-#Added the detail of the genes in megablast
-print "Adding info in reference blasthit ....\n";
-AOM::commonSubs::addGeneDetail("$param->{project_dir_path}/intermediate_files/ref/refgenome.megablast", $geneSet, "$param->{project_dir_path}/intermediate_files/ref/refgenome.megablast.added");
+print "Adding gene info to diamond blast ouptut\n";
+AOM::commonSubs::addGeneDetail("$param->{output_folder}/intermediate_files/ref/refgenome.megablast", $geneSet, "$param->{output_folder}/intermediate_files/ref/refgenome.megablast.added");
 
-print "Storing hits in hash - reference based\n";
-my ($refHash_ref, $min, $max)=refHasher("$param->{project_dir_path}/intermediate_files/ref/refgenome.megablast.added");
+#print "Storing hits in hash - reference based\n";
+my ($refHash_ref, $min, $max)=refHasher("$param->{output_folder}/intermediate_files/ref/refgenome.megablast.added");
 return ($refHash_ref, $min, $max);
 }
 

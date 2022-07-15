@@ -30,7 +30,7 @@ The rest of the documentation details each of the object methods.
 package AOM::Module;
 
 use strict;
-#use warnings;
+use warnings;
 # -- comment to force avoid this Variable "%taxidP" will not stay shared at /home/jit/Downloads/Alienomics_v1.archives-2020-06-01/bin/./AOM/Module.pm line 748.
 use Bio::SeqIO;
 use Cwd;
@@ -57,7 +57,7 @@ use Bio::DB::Taxonomy;
 use Pod::Usage;
 use Bio::Root::Root;
 use Exporter;
-our @EXPORT_OK = "AOM";
+our @EXPORT_OK = "AOMule";
 
 #Turning off BioPerl warnings
 $Bio::Root::Root::DEBUG = -1;
@@ -69,25 +69,13 @@ sub help {
   print "Usage: alienomics.pl -c [path to configuration file]\n\n";
   print "       To execute alienomics with the parameters defined in a configuration file\n\n";
   print "                OR\n\n";
-  print "       alienomics.pl -qr -c [path to configuration file]\n\n";
-  print "       To quickly check GC and Coverage for alienomics run \n\n";
-  print "                OR\n\n";
-  print "       alienomics.pl -cc -ccl [path]\n\n";
+  print "       alienomics.pl -cc [additional parameters]\n\n";
   print "       To create a new configuration file to use with alienomics\n\n";
   print "                OR\n\n";
-  print "       alienomics.pl -dd -ddl [path]\n\n";
-  print "       To download alienomics third party databases\n\n";
-  print "                OR\n\n";
-  print "	alienomics.pl -w\n\n	To print the authors detail\n\n";
-  print "		OR\n\n";
   print "       alienomics.pl  -v\n\n       To print alienomics's version\n\n\n\n";
-  #print "Currently supported options when creating a new configuration file are:\n\n";
+  print "Currently supported options when creating a new configuration file are:\n\n";
 }
 
-## To print the time
-sub fetchLocalTime {
-    return POSIX::strftime('%a, %d %b %Y %T %t', localtime);
-}
 
 ############################################################################################
 # Read config files in the form element = value #comment --->
@@ -105,7 +93,7 @@ sub read_config {
   $param{AUGUSTUS_CONFIG_PATH} = read_config_file_line('AUGUSTUS_CONFIG_PATH', $param{alien_dir}, $fh_ParamConfig);
 
 # BLASTDB location --->
-  #$param{blastdb_path} = read_config_file_line('blastdb_path', $param{alien_dir}, $fh_ParamConfig);
+  $param{blastdb_path} = read_config_file_line('blastdb_path', $param{alien_dir}, $fh_ParamConfig);
   $param{uniref50_path} = read_config_file_line('uniref50_path', $param{alien_dir}, $fh_ParamConfig);
 
 # TAXDUMP location --->
@@ -123,8 +111,6 @@ sub read_config {
   $param{input_mapping_bam} = read_config_file_line('input_mapping_bam', '', $fh_ParamConfig);
   $param{rna_seq} = read_config_file_line('rna_seq', '', $fh_ParamConfig);
   $param{RNAseq_location} = read_config_file_line('RNAseq_location', '', $fh_ParamConfig);
-
-  $param{excludeTaxID} = read_config_file_line('excludeTaxID', '', $fh_ParamConfig);
 
  $param{rejectGi} = read_config_file_line('rejectGi', '', $fh_ParamConfig);
   $param{negateGi} = read_config_file_line('negateGi', '', $fh_ParamConfig);
@@ -155,7 +141,7 @@ sub read_config {
   $param{min_gene_number} = read_config_file_line('min_gene_number', '', $fh_ParamConfig);
   $param{ActivateTNF} = read_config_file_line('ActivateTNF', '', $fh_ParamConfig);
   $param{ActivateBIGBLAST} = read_config_file_line('ActivateBIGBLAST', '', $fh_ParamConfig);
-  #$param{Uniref50_taxlist} = read_config_file_line('Uniref50_taxlist', '', $fh_ParamConfig);
+  $param{Uniref50_taxlist} = read_config_file_line('Uniref50_taxlist', '', $fh_ParamConfig);
 
 # SCORING --->
   $param{alien_accepted} = read_config_file_line('alien_accepted', '', $fh_ParamConfig);
@@ -208,7 +194,7 @@ sub read_config_file_line { # file format element = value
   while (my $line = <$fh_config_file>){
     if ($line =~ /^\s*$parameter\s*=\s*([^\s]*)\s*(.*)/) {    # the string to be searched in the file: parameter ($parameter); value ($1); description ($2)
 
-      #print $parameter.":\t".$1."\t".$2."\n";
+      print $parameter.":\t".$1."\t".$2."\n";
       #print "$parameter\t$1\t$2";
 
       chomp ($line);
@@ -245,7 +231,7 @@ sub check_parameters { #check for all parameters,
 #  if (!-d $param->{input_genome_fasta}) { die ("The path to your project's nucleotide files isn't a valid directory, please check if the path in 'input_genome_fasta' is correct: $param->{input_genome_fasta}\n"); }
 #  if (!-r $param->{input_genome_fasta}) { die ("You don't have permission to read in your project's nucleotide directory, please redefine your permissions.\n"); }
 
-#  if (!defined $param->{Uniref50_taxlist}) { die ("No path to the taxlist file was specified in your project's configuration file, please fill the parameter 'Uniref50_taxlist'.\n"); }
+  if (!defined $param->{Uniref50_taxlist}) { die ("No path to the taxlist file was specified in your project's configuration file, please fill the parameter 'Uniref50_taxlist'.\n"); }
 
 
 # BLASTDB FILES --->
@@ -325,17 +311,17 @@ if (!defined $param->{augustus_path}) { die ("No path to augustus was specified 
 
 sub parse_genome_files {
   my ($param, $LOG) = @_;
-  #print ("opening $param->{input_genome_fasta}\n");
+  print ("opening $param->{input_genome_fasta}\n");
   open (my $file, $param->{input_genome_fasta}) || die ("Path to assembly fasta files not found: $!\n");
   #opendir (my $nt_files_dir, $param->{input_genome_fasta}) || die ("Path to assembly fasta files not found: $!\n");
   my (%sequence_data);
-  
+  print "Parsing genome file and storing it\n";
   print $LOG ('Parsing assembled genome/contigs/scaffolds files', "\n") if $param->{verbose};
   #while (my $file = $nt_files_dir) {
     if (($file eq '.') || ($file eq '..') || ($file =~ /^\./) || ($file =~ /~$/)) { next; }  # Prevents from reading hidden or backup files
     my $file_content = new Bio::SeqIO(-format => 'fasta',-file => "$param->{input_genome_fasta}");
  
-    #Store the genome for augustus (useless now ?)
+    #Store the genome for augustus
     my $out_content = Bio::SeqIO->newFh(-format => 'fasta', ,-file => ">$param->{output_folder}/intermediate_files/gff/genome.fa");
     print $LOG ('Reading file ', $file, "\n") if $param->{verbose};
     while (my $gene_info = $file_content->next_seq()) {
@@ -380,10 +366,10 @@ sub parse_gene_files {
          $geneCov=$covHash_ref->{$accession_number};
 	}
       my $geneTrans=0.0; # Default value for transcriptomics
-        #if ($param->{rna_seq} > 0 ) {
+        if ($param->{rna_seq} > 0 ) {
          $geneTrans=$transHash_ref->{$accession_number} if $transHash_ref->{$accession_number};
-	#print "$geneTrans : $accession_number -------- $transHash_ref->{'Chrom_1:2155-5638'} ***\n";
-        #}
+#print "$geneTrans : $accession_number -------- $transHash_ref->{'Chrom_1:2155-5638'} ***\n";
+        }
       $sequence_data{$accession_number}{status} = "OK";        #everybody starts fine
       $sequence_data{$accession_number}{problem_desc} = "-";   #everybody starts fine
 
@@ -744,7 +730,6 @@ no warnings 'recursion';
 }
 
 
-############################################################
 ############################################################
 sub extractTax {
 	my ($taxidP_ref, $taxidT_ref, $taxidN_ref, $nam, $id, $tax_list)=@_;

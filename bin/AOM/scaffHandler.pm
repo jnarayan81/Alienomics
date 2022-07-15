@@ -16,27 +16,27 @@ my ($param, $taxid_has_parent_ref, $taxid_has_taxlevel_ref, $taxid_has_name_ref,
 # Blast against NR database
 print "Blast against NR database\n";
 if ($param->{negateGi}) {
-system ("$param->{blastn_path} -task dc-megablast -query $fastaSeq -negative_gilist $param->{rejectGi} -db $param->{blastdb_path}/nt -evalue $param->{evalue} -num_threads $param->{max_processors} -max_target_seqs 1 -max_hsps 1 -qcov_hsp_perc $param->{qcovper} -outfmt '6 qseqid staxid qstart qend sallseqi sstart send evalue length frames qcovs bitscore' -out $param->{project_dir_path}/intermediate_files/blast/scaffblastGenome.megablast");
+system ("$param->{blastn_path} -task dc-megablast -query $fastaSeq -negative_gilist $param->{rejectGi} -db $param->{blastdb_path}/nt -evalue $param->{evalue} -num_threads $param->{max_processors} -max_target_seqs 1 -max_hsps 1 -qcov_hsp_perc $param->{qcovper} -outfmt '6 qseqid staxid qstart qend sallseqi sstart send evalue length frames qcovs bitscore' -out $param->{output_folder}/intermediate_files/blast/scaffblastGenome.megablast");
 } 
 else {
-system ("$param->{blastn_path} -task dc-megablast -query $fastaSeq -db $param->{blastdb_path}/nt -evalue $param->{evalue} -num_threads $param->{max_processors} -max_target_seqs 1 -max_hsps 1 -qcov_hsp_perc $param->{qcovper} -outfmt '6 qseqid staxid qstart qend sallseqi sstart send evalue length frames qcovs bitscore' -out $param->{project_dir_path}/intermediate_files/blast/scaffblastGenome.megablast");
+system ("$param->{blastn_path} -task dc-megablast -query $fastaSeq -db $param->{blastdb_path}/nt -evalue $param->{evalue} -num_threads $param->{max_processors} -max_target_seqs 1 -max_hsps 1 -qcov_hsp_perc $param->{qcovper} -outfmt '6 qseqid staxid qstart qend sallseqi sstart send evalue length frames qcovs bitscore' -out $param->{output_folder}/intermediate_files/blast/scaffblastGenome.megablast");
 } 
 
 # Annotate the taxonomical information
 # If the blast have no hits then create a empty file
 print "Annotating the taxonomical information\n";
-if (-z "$param->{project_dir_path}/intermediate_files/blast/scaffblastGenome.megablast") {copy("$param->{project_dir_path}/intermediate_files/blast/scaffblastGenome.megablast","$param->{project_dir_path}/intermediate_files/blast/scaffblastGenome.megablast.annotated") or die "Copy failed: $!"; } 
+if (-z "$param->{output_folder}/intermediate_files/blast/scaffblastGenome.megablast") {copy("$param->{output_folder}/intermediate_files/blast/scaffblastGenome.megablast","$param->{output_folder}/intermediate_files/blast/scaffblastGenome.megablast.annotated") or die "Copy failed: $!"; } 
 else {
-extractBlastCovAnnot($taxid_has_parent_ref, $taxid_has_taxlevel_ref, $taxid_has_name_ref, $param->{tax_list}, "$param->{project_dir_path}/intermediate_files/blast/scaffblastGenome.megablast", "$param->{project_dir_path}/intermediate_files/blast/scaffblastGenome.megablast.annotated", $param->{max_processors});
+extractBlastCovAnnot($taxid_has_parent_ref, $taxid_has_taxlevel_ref, $taxid_has_name_ref, $param->{tax_list}, "$param->{output_folder}/intermediate_files/blast/scaffblastGenome.megablast", "$param->{output_folder}/intermediate_files/blast/scaffblastGenome.megablast.annotated", $param->{max_processors});
 }
 
 #Added the detail of the genes in megablast
 print "Additng info in genomeNR blasthit ....\n";
-AOM::commonSubs::addGeneDetail("$param->{project_dir_path}/intermediate_files/blast/scaffblastGenome.megablast.annotated", $geneSet, "$param->{project_dir_path}/intermediate_files/blast/blastGenome.megablast.annotated.added");
+AOM::commonSubs::addGeneDetail("$param->{output_folder}/intermediate_files/blast/scaffblastGenome.megablast.annotated", $geneSet, "$param->{output_folder}/intermediate_files/blast/blastGenome.megablast.annotated.added");
 
 # Keep all the blast hits with annotation
 print "Storing all the blast hits with annotation\n";
-my ($genomeHash_ref, $min, $max) = genomeHasher("$param->{project_dir_path}/intermediate_files/blast/blastGenome.megablast.annotated.added");
+my ($genomeHash_ref, $min, $max) = genomeHasher("$param->{output_folder}/intermediate_files/blast/blastGenome.megablast.annotated.added");
 
 return ($genomeHash_ref, $min, $max);
 }

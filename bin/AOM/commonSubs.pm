@@ -12,6 +12,7 @@ while (<FILE>) {
  if ($gene{$values[0]}) {
 	print OUT "$_\t$gene{$values[0]}{len}\t$gene{$values[0]}{gc}\n";
  }
+ else { print "Did not find $values[0] in the gene dictionnary (see line below)\n\t$_\n";}
 }
 close(FILE);
 close(OUT);
@@ -33,10 +34,10 @@ foreach my $name (@toolNames) {
 		print colored(['red on_bright_yellow'],"Can't find $name in your system", "\n");
 		push (@notInstalled, $name);
 	} else {
-		print "$name is installed\n";
+		#print "$name is installed\n";
 	}
 }
-if (!@notInstalled) {print "Congratulations, all necessary programs are installed for Alienomics\n";}
+if (!@notInstalled) {print "Done\n";}
 else { 
 	if (@notInstalled) { print colored(['red on_bright_yellow'],"\nFollowing tools are missing in your system path:", "\n");}
 	foreach (@notInstalled) {                        
