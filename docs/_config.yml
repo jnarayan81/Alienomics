@@ -8,4 +8,5 @@ description: Discovering Aliens !
 
 github:
   zip_url: https://github.com/jnarayan81/Alienomics/archive/refs/tags/v0.2.zip
-  another_url: https://github.com/jnarayan81/Alienomics/archive/refs/tags/v0.2.tar.gz
+  #another_url: https://github.com/jnarayan81/Alienomics/archive/refs/tags/v0.2.tar.gz
+  tar_url: https://github.com/jnarayan81/Alienomics/archive/refs/tags/v0.2.tar.gz
