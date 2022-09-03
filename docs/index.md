@@ -156,7 +156,7 @@ Alienomics should run without encountering issues. When this is the case, you ca
 
 Alienomics software tool has several options. The main function is triggered by the `-conf` option (short version: `-c`) and will start a complete Alienomics run corresponding to a specified configuration file:
 ```bash
-alienomics_v0.3 -c config/config.aom 
+alienomics_v0.3 -c config/config.conf 
 ```
 
 Other functions are available and are mostly needed for the installation of Alienomics and the preparation of your analysis:
