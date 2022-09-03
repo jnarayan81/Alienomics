@@ -6,6 +6,11 @@ plugins:
 title: Alienomics
 description: Discovering Aliens !
 
+show_downloads: true 
+#OR false (unquoted) to indicate whether to provide a download URL
+google_analytics: 
+#[Your Google Analytics tracking ID]
+
 github:
   zip_url: https://github.com/jnarayan81/Alienomics/archive/refs/tags/v0.2.zip
   #another_url: https://github.com/jnarayan81/Alienomics/archive/refs/tags/v0.2.tar.gz
