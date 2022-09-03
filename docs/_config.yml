@@ -2,3 +2,10 @@
 remote_theme: pages-themes/architect@v0.2.0
 plugins:
 - jekyll-remote-theme # add this line to the plugins list if you already have one
+
+title: Alienomics
+description: Discovering aliens !
+
+github:
+  zip_url: https://github.com/jnarayan81/Alienomics/archive/refs/tags/v0.2.zip
+  another_url: https://github.com/jnarayan81/Alienomics/archive/refs/tags/v0.2.tar.gz
