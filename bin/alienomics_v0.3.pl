@@ -58,6 +58,7 @@ use Text::Trim;
 use Bio::Taxon;
 use Bio::Tree::Tree;
 
+#Custom packages
 use AOM::Module;
 use AOM::gffHandler;
 use AOM::rRNAHandler;
@@ -71,6 +72,7 @@ use AOM::HGTcategorization;
 use AOM::transHandler;
 use AOM::downloadHandler;
 use AOM::configHandler;
+use AOM::commonSubs;
 
 # Basics mandatory alienomics variables
 my (
@@ -295,8 +297,6 @@ my ($sequence_data_ref, $id2tmp_id_ref, $tmp_id2id_ref) = AOM::Module::parse_gen
 #	print "Using local gff file:\t$param_ref->{input_genome_gff}\n";
 #	copy("$param_ref->{input_genome_gff}","$param_ref->{output_folder}/intermediate_files/gff/preGenes.gff") or die "Copying gff file failed: $!";
 #}
-
-
 
 # Store the genes detail
 $date=`date '+%Y-%m-%d %H:%M:%S'`; chomp $date;

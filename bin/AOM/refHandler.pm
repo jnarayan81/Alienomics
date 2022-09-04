@@ -1,8 +1,5 @@
 package AOM::refHandler;
-
 #Handle the reference blast
-
-#!/usr/bin/env perl
 use strict;
 use warnings;
 use List::MoreUtils qw( minmax );
@@ -18,12 +15,12 @@ my ($param, $geneSet)=@_;
 
 if ($param->{create_local_db} eq 'yes') {
    if ($param->{alignment_mode} eq 'blast') { # warning: this will blast against a GENOME
-      print "Creating blast for nucleotidic DB\n";
+      print "Creating blast DB using genome sequences at $param->{reference_genome_file} \n";
       system ("$param->{makeblastdb_path} -in $param->{reference_genome_file} -parse_seqids -dbtype nucl -out $param->{output_folder}/localDB/refDB/myDB");
    }
    elsif ($param->{alignment_mode} eq 'diamond') { # warning: this will blast against a PROTEOME
-      print "Creating diamond DB for reference proteome\n";
-      system ("$param->{diamond_path} makedb --in $param->{reference_proteome_file} --db $param->{output_folder}/localDB/refDB/myDB --threads $param->{max_processors} > /dev/null 2>&1");
+      print "Creating diamond DB using reference proteome sequences at $param->{reference_proteome_file} \n";
+      AOM::commonSubs::custom_system ("$param->{diamond_path} makedb --in $param->{reference_proteome_file} --db $param->{output_folder}/localDB/refDB/myDB --threads $param->{max_processors} > /dev/null 2>&1");
    }
 }
 else  {print "Do database !!"; }
@@ -42,17 +39,23 @@ elsif ($param->{alignment_mode} eq 'diamond') { # warning: this will blast again
 #Extract all no_hits_ids
 my $noHitsValues_ref = extractNoHits("$param->{output_folder}/intermediate_files/bed/gene.fa", "$param->{output_folder}/intermediate_files/ref/refgenome.megablast", "$param->{output_folder}/intermediate_files/ref/refgenome.ids.noHits");
 
+#Extract fasta sequences
 extractFasta($noHitsValues_ref, "$param->{output_folder}/intermediate_files/bed/gene.fa", "$param->{output_folder}/intermediate_files/ref/refNoHits.fa");
 #extractFasta2("$param->{output_folder}/intermediate_files/bed/gene.fa", "$param->{output_folder}/intermediate_files/ref/refgenome.ids.noHits", "$param->{output_folder}/intermediate_files/ref/refNoHits.fa");
 
+#Add gene information
 print "Adding gene info to diamond blast ouptut\n";
 AOM::commonSubs::addGeneDetail("$param->{output_folder}/intermediate_files/ref/refgenome.megablast", $geneSet, "$param->{output_folder}/intermediate_files/ref/refgenome.megablast.added");
 
+#Store in Hash
 #print "Storing hits in hash - reference based\n";
 my ($refHash_ref, $min, $max)=refHasher("$param->{output_folder}/intermediate_files/ref/refgenome.megablast.added");
 return ($refHash_ref, $min, $max);
 }
 
+#Subs here
+
+###########################################################
 #rRNA Handler
 sub refHasher {
 my $buscoRefMBlast = shift;
@@ -73,7 +76,6 @@ while ( not $fh->eof ) {
 ($min, $max) = minmax @allScore;
 return (\%buscoHash, $min, $max);
 }
-
 
 
 ############################################################

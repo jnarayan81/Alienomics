@@ -97,7 +97,7 @@ system("rm -f $uniref50oneline");
 
 
 print "Preparing diamond database\n";
-system ("$param->{diamond_path} makedb --in $database --db $database --threads $param->{max_processors} > /dev/null 2>&1");
+AOM::commonSubs::custom_system ("$param->{diamond_path} makedb --in $database --db $database --threads $param->{max_processors} > /dev/null 2>&1");
 
 print "Running diamond blastx\n";
 # SINGLE HIT VERSION
@@ -106,7 +106,7 @@ print "Running diamond blastx\n";
 #system ("$param->{diamond_path} $param->{diamond_task} --more-sensitive --query $param->{output_folder}/intermediate_files/bed/gene.fa  --db $database -k 1 --max-hsps 1 --evalue $param->{evalue} --query-cover $param->{qcovper} --threads $param->{max_processors} --outfmt 6 qseqid staxids qstart qend sstart send evalue length qframe qcovhsp bitscore sseqid --out $param->{output_folder}/intermediate_files/blast/blastGenome.megablast > $param->{output_folder}/intermediate_files/blast/diamondblastx.log");
 
 # MULTI-HITS VERSION (keeping multi-hits + adding pident field !):
-system ("$param->{diamond_path} $param->{diamond_task} --more-sensitive --query $param->{output_folder}/intermediate_files/bed/gene.fa --db $database -k 50 --max-hsps 1 --evalue $param->{evalue} --query-cover $param->{qcovper} --threads $param->{max_processors} --outfmt 6 qseqid qstart qend sstart send evalue length qframe qcovhsp bitscore pident sseqid --out $param->{output_folder}/intermediate_files/blast/blastGenome.megablast > $param->{output_folder}/intermediate_files/blast/diamondblastx.log > /dev/null 2>&1");
+AOM::commonSubs::custom_system  ("$param->{diamond_path} $param->{diamond_task} --more-sensitive --query $param->{output_folder}/intermediate_files/bed/gene.fa --db $database -k 50 --max-hsps 1 --evalue $param->{evalue} --query-cover $param->{qcovper} --threads $param->{max_processors} --outfmt 6 qseqid qstart qend sstart send evalue length qframe qcovhsp bitscore pident sseqid --out $param->{output_folder}/intermediate_files/blast/blastGenome.megablast > $param->{output_folder}/intermediate_files/blast/diamondblastx.log > /dev/null 2>&1");
 # evalue = 6 ; length = 7 ; bitscore = 10 ; pident = 11
 
 }

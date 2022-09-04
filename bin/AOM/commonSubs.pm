@@ -7,15 +7,37 @@ my %gene=%$gene;
 open(FILE, "<$file") || die "File not found $!";
 open(OUT, ">$out") || die "File not found $!";
 while (<FILE>) {
- chomp;
- my @values = split /\t/, $_;
- if ($gene{$values[0]}) {
-	print OUT "$_\t$gene{$values[0]}{len}\t$gene{$values[0]}{gc}\n";
- }
- else { print "Did not find $values[0] in the gene dictionnary (see line below)\n\t$_\n";}
-}
+	chomp;
+	 my @values = split /\t/, $_;
+ 	if ($gene{$values[0]}) {
+		print OUT "$_\t$gene{$values[0]}{len}\t$gene{$values[0]}{gc}\n";
+ 	}
+ 	else { print "Did not find $values[0] in the gene dictionnary (see line below)\n\t$_\n";}
+	}
 close(FILE);
 close(OUT);
+}
+
+#Modified system command for efficient error handling 
+sub custom_system {
+    my ($command, @other_agrs) = @_;             # you may do more via @other_args array
+
+    my ($cmdref, $sys_ret) = (ref $command, 0);  # LIST or scalar invocation?
+    if ($cmdref eq 'ARRAY') {
+        $sys_ret = system(@$cmd);
+    }
+    elsif (not $cmdref) {
+        $sys_ret = system($command);
+    }
+    else { Carp::carp "abracadabra error, got $cmdref" }
+
+    return 1 if $sys_ret == 0;
+
+    # Still here? The rest is error handling.
+    # (Or handling of particular non-zero returns; see text footnote)
+    Carp::carp "Trouble dealing  with 'system($command)': $?";
+    print "Got to exit " . ($? >> 8) . " from $command\n";
+    return 0;  # or Carp::croak (but then design changes)
 }
 
 #Check all the  mandatory programs to run Alienomics
@@ -46,6 +68,5 @@ else {
 exit;
 }
 }
-
 
 1;
