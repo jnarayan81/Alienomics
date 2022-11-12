@@ -4,7 +4,7 @@
  /\  |    | |__  |\ | /  \  |\/| | /  ` /__`
 /~~\ |___ | |___ | \| \__/  |  | | \__, .__/ v0.3
 
-Automated "sensitive" contamination filtration and HTG detection tool
+Automated pipeline for HGT and contaminant detection in an assembled, annotated genome
 Contact: jnarayan81@gmail.com and polo.simion@gmail.com for support
 
 USAGE:
