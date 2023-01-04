@@ -7,10 +7,11 @@ Welcome to Alienomics user manual !
 
 Alienomics is a pipeline dedicated to detect both candidate HGTs (cHGTs) and contaminants within an assembled genome, without recquiring additional genome assemblies from closely-related species nor computationaly-heavy phylogenetic inferences. Alienomics combines several sources of information such as read coverage, GC content, expression level, scaffold-scale synteny, sequence similarity (against public databases) and interprete them as proxy for gene origin and its integration within the genome. This allows Alienomics to classify each gene as a "self" gene, a contaminant or a candidate HGT.
 
-**Main authors and contact**: 
-Jitendra Narayan <jnarayan81@gmail.com>
-Paul Simion <paul.simion@univ-rennes1.fr>
-Karine Van Doninck <Karine.Van.Doninck@ulb.be>.
+**Main authors and contact**: \
+Jitendra Narayan <jnarayan81@gmail.com>\
+Paul Simion <paul.simion@univ-rennes1.fr>\
+Alexandre Mayer <alexandre.mayer@unamur.be>\
+Karine Van Doninck <Karine.Van.Doninck@ulb.be>
 
 **Citation**
 If you used Alienomics in your work, please cite the following article in which a preliminary version of Alienomics was used:
